@@ -47,3 +47,27 @@ test.each([
 ])('testing create %s char', (status, char, expected) => {
   expect(char).toEqual(expected);
 });
+
+test('levelUp work', () => {
+  const char = new Bowman('Легалас');
+  char.health = 50;
+  char.levelUp();
+  expect(char).toEqual({
+    name: 'Легалас', type: 'Bowman', health: 100, level: 2, attack: 30, defence: 30,
+  });
+});
+
+test('levelUp doesnt work', () => {
+  const char = new Bowman('Легалас');
+  char.health = 0;
+  expect(() => { char.levelUp(); }).toThrow('нельзя повысить уровень умершего');
+});
+
+test.each([
+  ['dead', 150, 0],
+  ['half', 100, 25],
+])('testing damage %s status', (status, points, expected) => {
+  const char = new Bowman('Легалас');
+  char.damage(points);
+  expect(char.health).toBe(expected);
+});
